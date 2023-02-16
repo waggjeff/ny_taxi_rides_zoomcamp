@@ -3,8 +3,7 @@
 with tripdata as 
 (
   select *,
-    row_number() over(partition by pickup_datetime) as rn
-  from {{ source('staging','fhv2019') }}
+    from {{ source('staging','fhv2019') }} 
 )
 select
     -- identifiers
@@ -16,7 +15,6 @@ select
     cast(pickup_datetime as timestamp) as pickup_datetime,
     cast(dropoff_datetime as timestamp) as dropoff_datetime,
 from tripdata
-where rn = 1
 
 
 -- dbt build --m <model.sql> --var 'is_test_run: false'
